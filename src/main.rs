@@ -1,10 +1,85 @@
 use rand::{thread_rng, Rng};
 use std::cmp::Ordering;
 use std::io::stdin;
+
 fn main() {
+    drop_reference();
+    control();
+    scope();
+    read_out_of_range_index();
+    compound_types();
     init();
     some_matches();
     guess_number_game();
+}
+
+fn drop_reference() {
+    let mut s = String::new();
+    s.push_str("Yes");
+    drop(s); // no need
+}
+
+fn control() {
+    let x = 3;
+    let num = if x == 3 { 10 } else { 90 };
+    println!("{num}");
+
+    let mut count = 0;
+
+    let result = loop {
+        count += 1;
+        if count == 10 {
+            break count * 2;
+        }
+    };
+
+    println!(" result {result}");
+
+    let array = [1, 2, 3, 4, 5];
+
+    for el in array {
+        println!("{el}");
+    }
+
+    for el in 1..7 {
+        println!("{el}");
+    }
+}
+
+fn scope() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
+}
+
+fn compound_types() {
+    let tuple: (i32, f32, i8) = (500, 2.0, 2);
+    let (x, y, z) = tuple;
+    let first_tuple = tuple.0;
+
+    let collection: [i32; 5] = [1, 2, 3, 4, 5];
+    let first = collection[0];
+    println!(
+        "{} , {} , {} + {} first tuple {}",
+        x, y, z, first, first_tuple
+    );
+}
+
+// expect an error
+fn read_out_of_range_index() {
+    let array = [1, 2, 3];
+    let mut prompt_user = String::new();
+
+    stdin()
+        .read_line(&mut prompt_user)
+        .expect_err("Cannot read");
+
+    let prompt_user: usize = prompt_user.parse().expect("Cannot convert");
+
+    println!("array value at 4 is {}", array[prompt_user]);
 }
 
 fn some_matches() {
