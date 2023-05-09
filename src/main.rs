@@ -3,6 +3,9 @@ use std::cmp::Ordering;
 use std::io::stdin;
 
 fn main() {
+    user_struct();
+    test();
+    set_reference();
     drop_reference();
     control();
     scope();
@@ -11,6 +14,122 @@ fn main() {
     init();
     some_matches();
     guess_number_game();
+    // let reference_nowhere = dangle_reference();
+}
+
+struct Empty;
+struct Color(u8, u8, u8);
+
+#[derive(Debug)]
+struct Person {
+    id: u32,
+    name: String,
+    active: bool,
+    grade: f32,
+}
+
+impl Person {
+    fn create_user() -> Person {
+        return Person {
+            id: 32,
+            name: String::from("malet"),
+            active: true,
+            grade: 1.6,
+        };
+    }
+
+    fn get_lowercase_name(&self) -> String {
+        return self.name.to_lowercase();
+    }
+}
+
+fn user_struct() {
+    let empty = Empty;
+    let black = Color(0, 0, 0);
+    let mut user = Person::create_user();
+    // user.name = String::from("ALEX");
+    // let user2: Person = Person { ..user };
+    let name = user.get_lowercase_name();
+    println!("{:?}", user);
+}
+
+fn inc(x: i32) {
+    println!("avant {x}");
+    let nbr = x * 2;
+    println!("après {nbr}");
+}
+
+fn test() {
+    let x = 12;
+    inc(x);
+    println!("{x}");
+}
+
+fn slices() {
+    let array = [1, 2, 3, 4, 5];
+    let slice = &array[1..4];
+
+    // more complexe slices
+    let mut people = vec![
+        Person {
+            name: String::from("Malet"),
+            id: 12,
+            active: true,
+            grade: 1.6,
+        },
+        Person {
+            name: String::from("Malet"),
+            id: 12,
+            active: true,
+            grade: 1.6,
+        },
+        Person {
+            name: String::from("Malet"),
+            id: 12,
+            active: true,
+            grade: 1.6,
+        },
+        Person {
+            name: String::from("Malet"),
+            id: 12,
+            active: true,
+            grade: 1.6,
+        },
+    ];
+
+    // 1 à 3 inclus
+    let slice = &mut people[1..4];
+}
+
+// fn dangle_reference() -> &String {
+//     let mut s1 = String::new();
+
+//     return &s1;
+// }
+
+// fn multiple_reference() {
+//     let mut str = String::new();
+
+//     // Ok not give ownerships
+//     let s1 = &str;
+//     let s2 = &str;
+
+//     // Ok - mutable borrow without giving ownerships
+//     let s3 = &mut str;
+//     // NOT GOOD - mutable borrow only one time
+//     let s4 = &mut str;
+// }
+
+fn set_reference() {
+    let mut str = String::new();
+    // NOT change ownerships
+    let str_len = get_string(&mut str);
+
+    println!("{}", str_len);
+}
+
+fn get_string(str: &mut String) -> usize {
+    return str.len();
 }
 
 fn drop_reference() {
