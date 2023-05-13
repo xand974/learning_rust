@@ -3,6 +3,23 @@ use std::cmp::Ordering;
 use std::io::stdin;
 
 fn main() {
+    let color = DesignSystem::Color(32, 12, 09);
+    let person = Person {
+        name: String::from("Malet"),
+        active: true,
+        id: 1,
+        grade: 12.1,
+        premium_plan: PremiumPlan::Monthly,
+    };
+    let person2 = Person {
+        name: String::from("Alexnadre"),
+        premium_plan: PremiumPlan::Yearly,
+        active: true,
+        id: 1,
+        grade: 12.1,
+    };
+    person.same_grade_than(&person2);
+    Person::gen_new(32);
     user_struct();
     test();
     set_reference();
@@ -20,12 +37,25 @@ fn main() {
 struct Empty;
 struct Color(u8, u8, u8);
 
+enum DesignSystem {
+    Color(u32, u32, u32),
+    Background(String),
+}
+
+#[derive(Debug)]
+enum PremiumPlan {
+    Monthly,
+    Semestrial,
+    Yearly,
+}
+
 #[derive(Debug)]
 struct Person {
     id: u32,
     name: String,
     active: bool,
     grade: f32,
+    premium_plan: PremiumPlan,
 }
 
 impl Person {
@@ -35,11 +65,26 @@ impl Person {
             name: String::from("malet"),
             active: true,
             grade: 1.6,
+            premium_plan: PremiumPlan::Monthly,
         };
     }
 
     fn get_lowercase_name(&self) -> String {
         return self.name.to_lowercase();
+    }
+
+    fn same_grade_than(&self, person: &Person) -> bool {
+        return self.grade == person.grade;
+    }
+
+    fn gen_new(size: u32) -> Self {
+        Self {
+            id: todo!(),
+            name: todo!(),
+            active: todo!(),
+            grade: todo!(),
+            premium_plan: todo!(),
+        }
     }
 }
 
@@ -76,24 +121,28 @@ fn slices() {
             id: 12,
             active: true,
             grade: 1.6,
+            premium_plan: PremiumPlan::Semestrial,
         },
         Person {
             name: String::from("Malet"),
             id: 12,
             active: true,
             grade: 1.6,
+            premium_plan: PremiumPlan::Monthly,
         },
         Person {
             name: String::from("Malet"),
             id: 12,
             active: true,
             grade: 1.6,
+            premium_plan: PremiumPlan::Monthly,
         },
         Person {
             name: String::from("Malet"),
             id: 12,
             active: true,
             grade: 1.6,
+            premium_plan: PremiumPlan::Monthly,
         },
     ];
 
